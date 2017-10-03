@@ -17,7 +17,7 @@ node {
     stage 'package'
     sh "mvn package"
 
-    //stage 'preview'
+    stage 'preview'
     //sh 'make deploy-default'
 
     stage 'report'
@@ -34,7 +34,7 @@ node {
       sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"
     }
 
-    //stage 'deploy'
+    stage 'deploy'
     //sh 'make deploy-default'
 
     // slackSend channel: '#integration', color: 'good', message: "success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'agileworks-tw', token: 'JhXFKEl6cBFoQ4v52BEJw9Mr'
