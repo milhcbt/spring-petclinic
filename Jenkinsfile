@@ -26,13 +26,13 @@ node {
     stage 'Artifact'
     step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
 
-    try{
-      stage 'Approve, go production'
-      def url = 'http://localhost:8000/'
-      input message: "Does staging at $url look good? ", ok: "Deploy to production"
-    }finally{
-      sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"
-    }
+    // try{
+    //  stage 'Approve, go production'
+    //  def url = 'http://localhost:8000/'
+    //  input message: "Does staging at $url look good? ", ok: "Deploy to production"
+    // }finally{
+    //  sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"
+    // }
 
     // stage 'deploy'
     // sh 'make deploy-default'
