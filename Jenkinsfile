@@ -15,7 +15,7 @@ node {
     stage 'test'
     sh "mvn test"
     }finally{
-      sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"
+      //sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"
     }
     stage 'package'
     sh "mvn package"
