@@ -12,23 +12,26 @@ node {
     sh "java -version"
 
     try{
-    stage 'test'
-    sh "mvn test"
+        stage 'test'
+        sh "mvn test"
+        stage 'package'
+        sh "mvn package"
+        // stage 'preview'
+        // sh 'make deploy-default'
+        stage 'Artifact'
+        step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
+
     }finally{
       //sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"
     }
-    stage 'package'
-    sh "mvn package"
+    
 
-    // stage 'preview'
-    // sh 'make deploy-default'
+    
 
     stage 'report'
     step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
 
-    stage 'Artifact'
-    step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
-
+    
     // try{
     //  stage 'Approve, go production'
     //  def url = 'http://localhost:8000/'
