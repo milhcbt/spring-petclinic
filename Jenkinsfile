@@ -22,15 +22,18 @@ node {
         step([$class: 'ArtifactArchiver', artifacts: '**/target/*.jar', fingerprint: true])
 
     }finally{
-      //sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"
+      //sh "ssh jenkins@localhost 'kill `cat deploy/release/run.pid`'"     
+        stage 'report'
+        step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
+        
+        stage('SonarQube analysis') {
+        // requires SonarQube Scanner 3
+        def scannerHome = tool 'SonarQube Scanner 3';
+        withSonarQubeEnv('Local Sonar') {
+          sh "${scannerHome}/bin/sonar-scanner"
+        }
     }
     
-
-    
-
-    stage 'report'
-    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-
     
     // try{
     //  stage 'Approve, go production'
@@ -43,12 +46,6 @@ node {
     // stage 'deploy'
     // sh 'make deploy-default'
 
-    stage('SonarQube analysis') {
-    // requires SonarQube Scanner 3
-    def scannerHome = tool 'SonarQube Scanner 3';
-    withSonarQubeEnv('Local Sonar') {
-      sh "${scannerHome}/bin/sonar-scanner"
-    }
   }
 
     // slackSend channel: '#integration', color: 'good', message: "success ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)", teamDomain: 'agileworks-tw', token: 'JhXFKEl6cBFoQ4v52BEJw9Mr'
