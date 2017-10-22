@@ -32,6 +32,8 @@ import org.springframework.test.web.servlet.MockMvc;
 public class OwnerControllerTests {
 
     private static final int TEST_OWNER_ID = 1;
+    private static final String GEORGE_NAME = "George";
+    private static final String FRANKLIN_NAME = "Franklin";
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,8 +54,7 @@ public class OwnerControllerTests {
         george.setTelephone("6085551023");
         given(this.owners.findById(TEST_OWNER_ID)).willReturn(george);
     }
-    private static final String GEORGE_NAME = "George";
-    private static final String FRANKLIN_NAME = "Franklin";
+    
 
     @Test
     public void testInitCreationForm() throws Exception {
