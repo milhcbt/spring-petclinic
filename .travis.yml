@@ -8,3 +8,21 @@ addons:
 script:
   # other script steps might be done before running the actual analysis
   - sonar-scanner
+env:
+  global:
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "N+amMNIkIZ5F1sGXcLLP0VxcoGwStz/TmMgXDVes2GfME2tqV1hp1AOeTCBsMXPqg88QfAAhdZDdQmm5kJWiiPrE1dFf3timH8vgIyKOpP84cvCa1nzmDJXton/U+HfbUy6mJzp3iZPI/LuJAQAg8zcKejju+sBoLLUdkr2Mc9Yn87XmYn8ae7R1qrnqKv1/nqeqN0cRNNvL6MszPsVGYxxj0PbgMYCjqcCuPUq3cPEwqpKPsbF4XMDH5OAGavihyuCtKcZV915jYqGaciUr0O/81Fksayxb2t9hEKKvSaD3koQxtzJwwyMlvlcPbd74FLsu9Rsq7iQOv/QWZzvlkS5VtD34sWTRPXu99g+1DLbSd2VJ0FRBbQklDOjEsrXfgegwVw7a0qmwB1dYIBrUlsB5aEFUu96Gqjvfi5e4S+UzRB+d1KWH+BOXPwUJXBMuroLCNiMCJHs8hVqUo4aqZgStufRIm0pfGj3FvsiiS7HmevJYbTzlKZaeU343gS3NwahBOGWniOU2CXNlevfU9Iy/vW3qzfG8Kfa2f8aIHcr+5ewNUzYXlpfBM5tdEfxlbRTYr5xomZUamLgDevseKFP4b+YQ3Z3j9v8xfA21BpNaZ+EEnuxj+7n4XMjThw/ZAvRQvz4PwgbrMoZ06pl2cgtY59x9vzLktjxepWB4VxQ="
+
+before_install:
+      - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
+
+addons:
+  coverity_scan:
+    project:
+      name: "milhcbt/spring-petclinic"
+      description: "Build submitted via Travis CI"
+    notification_email: milh_cbt@yahoo.com
+    build_command_prepend: "mvn clean"
+    build_command:   "mvn -DskipTests=true compile"
+    branch_pattern: coverity_scan
