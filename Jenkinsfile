@@ -28,7 +28,7 @@ node {
         
         stage('SonarQube analysis') {
         // requires SonarQube Scanner 3
-        def scannerHome = tool 'SonarQube Scanner 3';
+        def scannerHome = tool 'SonarQube';
         withSonarQubeEnv('Local Sonar') {
           sh "${scannerHome}/bin/sonar-scanner"
         }
